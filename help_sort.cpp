@@ -5,7 +5,6 @@
 #include <string>
 #include <vector>
 
-
 using namespace std;
 ifstream in("sotrudniki_predpriyatiya.txt");
 ofstream out("sorted.txt");
@@ -43,29 +42,23 @@ string normalize_date_str(string& s) {
     oss << m << '.' << y;
     return oss.str();
 }
-
-date str_to_date(string str) { // из строки в дату
+date str_to_date(string str) { 
     date x;
     str = normalize_date_str(str);
-    string temp = str.substr(0, 2); // день
+    string temp = str.substr(0, 2); 
     x.dd = atoi(temp.c_str());
-    temp = str.substr(3, 2); // месяц
+    temp = str.substr(3, 2); 
     x.mm = atoi(temp.c_str());
-    temp = str.substr(6, 4); // год
+    temp = str.substr(6, 4); 
     x.yy = atoi(temp.c_str());
     return x;
 }
-
 vector<people> in_file() {
     vector<people> x;
     people temp;
-    
-
     while (in.peek() != EOF) {
         temp.Position.clear();
-        
         in >> temp.Surname;      
-        
         string word;
         while (in >> word) {
 
@@ -78,12 +71,8 @@ vector<people> in_file() {
             }
             temp.Position += word;
         }
-        
-        
-        
         in >> temp.Experience;   
         in >> temp.Salary;       
-        
         if (in) {
             x.push_back(temp);
         } 
@@ -91,10 +80,8 @@ vector<people> in_file() {
             break;
         }
     }
-    
     return x;
 }
-
 bool operator < (people a, people b) {
     if (a.Salary < b.Salary) {
         return true;
@@ -107,7 +94,6 @@ bool operator < (people a, people b) {
     }
     return false;
 }
-
 void selection_sort(vector<people>& a) {
     for (int i = 0; i < a.size() - 1; i++) {
         int min = i;
@@ -121,7 +107,6 @@ void selection_sort(vector<people>& a) {
         }
     }
 }
-
 void print(people x) { 
     out <<  left << setw(20)  << x.Surname ;
     out << left <<  setw(30) << x.Position ;
@@ -144,22 +129,16 @@ void print(people x) {
 }
 
 int main() {
-    
     vector<people> data = in_file();
     selection_sort(data);
-  
-    
-
     out << left << setw(20) << "Surname";
-        out << left << setw(30) << "Position";
-       out << left << setw(24) << "Date of birth";
-       out << left << setw(16) << "Experience" ;
-       out << left << setw(12) << "Salary" 
+    out << left << setw(30) << "Position";
+    out << left << setw(24) << "Date of birth";
+    out << left << setw(16) << "Experience" ;
+    out << left << setw(12) << "Salary" 
         << endl;
-
     for (int i = 0; i < data.size(); ++i) {
         print(data[i] );
     }
-
     return 0;
 }
