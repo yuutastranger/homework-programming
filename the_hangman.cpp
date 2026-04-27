@@ -115,7 +115,6 @@ int main(){
             win_flag = true;
             break;
         }
-        system("cls");
         if(k_let == 0){
             counter++;
             flag = false;
@@ -124,7 +123,7 @@ int main(){
         if(flag){
             cout << "Good, you answered the right letter!"<< endl << endl;
         }
-        
+        system("cls");
 
     }
     
