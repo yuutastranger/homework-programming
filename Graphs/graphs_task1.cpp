@@ -62,14 +62,14 @@ void printAdjList(map<int, list<pair<int, double>>>& l_Adj, bool isWeight){
     }
 }
 
-void printUnadjPicks(map<int, list<pair<int, double>>>& l_Adj, int pick){
+void printUnadjVertex(map<int, list<pair<int, double>>>& l_Adj, int vertex){
     for(auto it = l_Adj.begin(); it != l_Adj.end(); it++){
         int v = it -> first;
-        if(v == pick){
+        if(v == vertex){
             continue;
         }
         bool isAdj = false;
-        for(auto it_1 = l_Adj[pick].begin(); it_1 != l_Adj[pick].end(); it_1++){
+        for(auto it_1 = l_Adj[vertex].begin(); it_1 != l_Adj[vertex].end(); it_1++){
             if(it_1 -> first == v){
                 isAdj = true;
                 break;
@@ -84,24 +84,38 @@ void printUnadjPicks(map<int, list<pair<int, double>>>& l_Adj, int pick){
     
 }
 
-void insertEdge(map<int, list<pair<int, double>>>& l_Adj, int pick_1, int pick_2){
-    if(pick_1 == pick_2){
+void insertEdge(map<int, list<pair<int, double>>>& l_Adj, int vertex_1, int vertex_2){
+    if(vertex_1 == vertex_2){
         cout << "Can't add loop!";
         return;
     }
 
     double w = 1.;
-    for(auto it = l_Adj[pick_1].begin(); it != l_Adj[pick_1].end(); it++){
-        if(it -> first == pick_2){
+    for(auto it = l_Adj[vertex_1].begin(); it != l_Adj[vertex_1].end(); it++){
+        if(it -> first == vertex_2){
             cout << "Edge already exists!";
             return;
         }
     }
-    l_Adj[pick_1].push_back(make_pair(pick_2, w));
-    if(l_Adj.find(pick_2) == l_Adj.end()){
-       l_Adj[pick_2]; 
+    l_Adj[vertex_1].push_back(make_pair(vertex_2, w));
+    if(l_Adj.find(vertex_2) == l_Adj.end()){
+       l_Adj[vertex_2]; 
     }
-    
+}
+
+void sdegApproach(map<int, list<pair<int, double>>>& l_Adj, int vertex){
+    int k = 0;
+    for(auto it = l_Adj.begin(); it != l_Adj.end(); it++){
+        int v = it -> first;
+        for(auto it_1 = l_Adj[v].begin(); it_1 != l_Adj[v].end(); it_1++){
+            if(it_1 -> first == vertex){
+                k++;
+                break;
+
+            }
+        }
+    }
+    cout << k << endl;
 }
 
 
@@ -115,9 +129,9 @@ int main(){
         ifstream in("graph.txt");
         in >> N >> M >> orient >> isWeight;
         auto l_Adj = buildAdjList(N, M, in, orient, isWeight);
-        int pick;
-        cout << "Insert the pick you want to find adjacency: "; cin >> pick;
-        printUnadjPicks(l_Adj, pick);
+        int vertex;
+        cout << "Insert the vertex you want to find adjacency: "; cin >> vertex;
+        printUnadjVertex(l_Adj, vertex);
         in.close();
     }
     else if(numTask == 2){
@@ -125,16 +139,28 @@ int main(){
         in >> N >> M >> orient >> isWeight;
         auto l_Adj = buildAdjList(N, M, in, orient, isWeight);
 
-        int pick_A, pick_B;
-        cout << "Insert your pick A from 0 to " << N - 1<< ": "; cin >> pick_A; cout << endl;
-        cout << "Insert your pick B from 0 to " << N - 1<< ": "; cin >> pick_B; cout << endl;
+        int vertex_A, vertex_B;
+        cout << "Insert your vertex A from 0 to " << N - 1<< ": "; cin >> vertex_A; cout << endl;
+        cout << "Insert your vertex B from 0 to " << N - 1<< ": "; cin >> vertex_B; cout << endl;
         printAdjList(l_Adj, isWeight);
         cout << endl;
-        insertEdge(l_Adj, pick_A, pick_B);
+        insertEdge(l_Adj, vertex_A, vertex_B);
         cout << endl;
         printAdjList(l_Adj, isWeight);
+        in.close();
     }
+    else if(numTask == 3){
+        ifstream in("graph_orient.txt");  
+        in >> N >> M >> orient >> isWeight;
+        auto l_Adj = buildAdjList(N, M, in, orient, isWeight);
 
+        int vertex;
+        cout << "Insert the vertex for which you want to calculate the indegree: "; cin >> vertex;
+        sdegApproach(l_Adj, vertex);
+        cout << endl;
+        printAdjList(l_Adj, isWeight);
+        in.close();
+    }
 
 
     
