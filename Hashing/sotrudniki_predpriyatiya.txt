@@ -1,0 +1,30 @@
+Anderson Engineer 12.5.1985 10 85000
+Brown Accountant 3.11.1990 7 72000
+Clark Manager 21.7.1988 9 78000
+Davis Programmer 14.2.1995 5 95000
+Evans Analyst 9.9.1992 6 88000
+Franklin Technician 30.1.1987 11 64000
+Garcia Designer 17.4.1993 6 70000
+Harris Administrator 25.6.1989 8 70000
+Jackson Engineer 6.12.1984 12 91000
+King Manager 11.3.1991 7 76000
+Lewis System Administrator 22.8.1986 10 87000
+Martinez Economist 4.10.1990 7 73000
+Nelson Programmer 19.5.1996 4 92000
+Owens Logistician 7.7.1988 9 68000
+Parker Technician 15.9.1994 5 62000
+Quinn Engineer 28.2.1987 11 89000
+Roberts Manager 13.6.1992 6 75000
+Stewart Accountant 1.12.1985 13 80000
+Turner Programmer 18.3.1997 3 91000
+Underwood Analyst 24.11.1991 7 86000
+Vasquez Administrator 5.8.1989 9 70000
+Walker Engineer 2.1.1986 12 87000
+Xavier Manager 10.10.1990 8 78000
+Young Designer 22.3.1993 6 72000
+Zimmerman Programmer 18.7.1995 5 94000
+Adams Technician 9.6.1988 9 63000
+Bennett Logistician 12.12.1991 7 71000
+Carter Analyst 3.9.1987 10 86000
+Diaz Engineer 17.5.1989 8 88000
+Edwards System Administrator 8.8.1992 6 79000
