@@ -42,7 +42,7 @@ void buildAdjList(ifstream& in){
         if(orient){
             if(fl){
                 l_Adj[x].push_back(make_pair(y, w));
-                l_AdjT[y].push_back(make_pair(x, w)); // транспонированный
+                l_AdjT[y].push_back(make_pair(x, w));
                 if(l_Adj.find(y) == l_Adj.end()){
                     l_Adj[y].push_back(make_pair(0, 0));
                     auto it = l_Adj.find(y);
