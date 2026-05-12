@@ -1,5 +1,5 @@
 #include <iostream>
-#include <fstream>
+#include <sstream>
 #include <map>
 #include <list>
 #include <vector>
@@ -46,7 +46,7 @@ void reverse(stack *&h){
 }
 
 
-void buildAdjList(ifstream& in){
+void buildAdjList(istream& in){
     int x, y;
     double w;
 
@@ -238,13 +238,40 @@ int main(){
     int choice;
     cout << "Enter what task do you want to check(1 - Eiler, 2 - Topological sort with cycle(3 - without cycle): "; cin >> choice;
     if(choice == 1){
-        ifstream in("graph_eiler.txt");
+        stringstream in(R"(
+            6 9 0 0
+            0 1
+            0 2
+            0 5
+            1 2
+            2 3
+            2 5
+            3 4
+            4 5
+            3 5
+            )");
         in >> N >> M >> orient >> isWeight;
         buildAdjList(in);
         eiler();
     }
+
     else if(choice == 2){
-        ifstream in("graph_orient.txt");
+        stringstream in(R"(
+            8 13 1 0
+            0 1
+            1 2
+            1 4
+            1 5
+            2 3
+            3 2
+            3 7
+            4 0
+            4 5
+            5 6
+            6 5
+            7 3
+            7 6
+            )");
         in >> N >> M >> orient >> isWeight;
         buildAdjList(in);
         printAdjList();
@@ -277,7 +304,23 @@ int main(){
     }
 
     else if(choice == 3){
-        ifstream in("graph_orient_without_cycles.txt");
+        stringstream in(R"(
+            9 14 1 0
+            0 1
+            0 2
+            1 2
+            1 3
+            1 4
+            2 4
+            2 5
+            3 6
+            4 6
+            5 4
+            5 7
+            6 7
+            6 8
+            7 8
+            )");
         in >> N >> M >> orient >> isWeight;
         buildAdjList(in);
         printAdjList();
