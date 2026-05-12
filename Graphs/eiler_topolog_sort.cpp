@@ -6,6 +6,16 @@
 #include <algorithm>
 using namespace std;
 
+map<int, list<pair<int, double>>> l_Adj;
+map<int, list<pair<int, double>>> l_AdjT;
+map<int, bool> used;
+map<int, int> pr; 
+vector<int> path, order;
+vector<vector<int>> cycles;
+vector<vector<int>> cycles_sort;
+int N, M;
+bool orient, isWeight;
+
 
 struct stack{
     int inf;
@@ -35,15 +45,6 @@ void reverse(stack *&h){
     h = head1;
 }
 
-map<int, list<pair<int, double>>> l_Adj;
-map<int, list<pair<int, double>>> l_AdjT;
-map<int, bool> used;
-map<int, int> pr; 
-vector<int> path, order;
-vector<vector<int>> cycles;
-vector<vector<int>> cycles_sort;
-int N, M;
-bool orient, isWeight;
 
 void buildAdjList(ifstream& in){
     int x, y;
@@ -106,7 +107,41 @@ void printAdjList(){
         cout << endl;
     }
 }
+void addCycle(int s_vertex, int e_vertex){
+    int cur = e_vertex;
+    vector<int> tmp;
+    while(cur != s_vertex){
+        tmp.push_back(cur);
+        cur = pr[cur];
+    }
+    tmp.push_back(s_vertex);
+    reverse(tmp.begin(), tmp.end());
+    if(tmp.size() < 3){
 
+        return;
+    }
+    cycles.push_back(tmp);
+    sort(tmp.begin(), tmp.end());
+    cycles_sort.push_back(tmp);
+}
+
+void findCycle(int vertex){
+    used[vertex] = 1;
+    for (auto it = l_Adj[vertex].begin(); it != l_Adj[vertex].end(); it++){
+        int v = it -> first;
+        if(pr[v] == vertex){
+            continue;
+        } 
+        if(!used[v]){
+            pr[v] = vertex;
+            findCycle(v);
+        }  
+        else{
+            addCycle(v, vertex);
+        }
+    }
+    used[vertex] = 0;
+}
 void eiler(){
     int v1 = -1, v2 = -1;
     for (auto it = l_Adj.begin(); it != l_Adj.end(); it++){
@@ -187,11 +222,91 @@ void eiler(){
     }
 }
 
+void topolog(int vertex){
+    
+    used[vertex] = 1;
+    for (auto it = l_Adj[vertex].begin(); it != l_Adj[vertex].end(); it++){
+        int v = it -> first;
+        if(!used[v]){
+            topolog(v);
+        }
+    }
+    order.push_back(vertex);
+}
 
 int main(){
-    ifstream in("graph_eiler.txt");
-    in >> N >> M >> orient >> isWeight;
-    buildAdjList(in);
-    eiler();
+    int choice;
+    cout << "Enter what task do you want to check(1 - Eiler, 2 - Topological sort with cycle(3 - without cycle): "; cin >> choice;
+    if(choice == 1){
+        ifstream in("graph_eiler.txt");
+        in >> N >> M >> orient >> isWeight;
+        buildAdjList(in);
+        eiler();
+    }
+    else if(choice == 2){
+        ifstream in("graph_orient.txt");
+        in >> N >> M >> orient >> isWeight;
+        buildAdjList(in);
+        printAdjList();
+        cout << endl;
+        bool hasCycle = false;
+        for(auto it = l_Adj.begin(); it != l_Adj.end(); it++){
+            pr[it -> first] = -1;
+        }
+        for(auto it = l_Adj.begin(); it != l_Adj.end(); it++){
+            if(!used[it -> first]){
+                findCycle(it -> first);
+            }
+        }
+        if(!cycles.empty()){
+            cout << "Graph has cycles, topological sort is impossible" << endl;
+            return 0;
+        }
+        used.clear(); 
+        for(auto it = l_Adj.begin(); it != l_Adj.end(); it++){
+            if(!used[it -> first]){   
+                topolog(it -> first);
+            }
+        }
+        for (int i = order.size() - 1; i >= 0; i--){
+            cout << order[i];
+            if(i > 0){
+                cout << " -> ";
+            }
+        }
+    }
+
+    else if(choice == 3){
+        ifstream in("graph_orient_without_cycles.txt");
+        in >> N >> M >> orient >> isWeight;
+        buildAdjList(in);
+        printAdjList();
+        cout << endl;
+        bool hasCycle = false;
+        for(auto it = l_Adj.begin(); it != l_Adj.end(); it++){
+            pr[it -> first] = -1;
+        }
+        for(auto it = l_Adj.begin(); it != l_Adj.end(); it++){
+            if(!used[it -> first]){
+                findCycle(it -> first);
+            }
+        }
+        if(!cycles.empty()){
+            cout << "Graph has cycles, topological sort is impossible" << endl;
+            return 0;
+        }
+        used.clear(); 
+        for(auto it = l_Adj.begin(); it != l_Adj.end(); it++){
+            if(!used[it -> first]){   
+                topolog(it -> first);
+            }
+        }
+        for (int i = order.size() - 1; i >= 0; i--){
+            cout << order[i];
+            if(i > 0){
+                cout << " -> ";
+            }
+        }
+    }
     return 0;
 }
