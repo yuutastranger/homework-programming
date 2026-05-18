@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <string.h>
-#include <stack>
 using namespace std;
 
 struct tree{
@@ -66,32 +65,19 @@ tree *createTree(string str){
     
 }
 
-void postorder(tree *tr, stack<int> &a){
+void postorder(tree *tr){
     if(tr){
-        postorder(tr -> left, a);
-        postorder(tr -> right, a);
-        if(isdigit(tr -> inf)){ 
-            int n = tr -> inf - '0';
-            a.push(n);
-        }
-        else{
-            int b = a.top();
-            a.pop();
-            int c = a.top();
-            a.pop();
-            if(tr -> inf == '+'){
-                a.push(b + c);
-            } 
-            if(tr -> inf == '-'){
-                a.push(c - b); 
-            }
-            if(tr -> inf == '*'){
-                a.push(b * c); 
-            }
-            if(tr -> inf == '/'){
-                a.push(c / b);
-            }
-        }
+        postorder(tr -> left);
+        postorder(tr -> right);
+        cout << tr -> inf;
+    }
+}
+
+void preorder(tree *tr){
+    if(tr){
+        cout << tr -> inf;
+        preorder(tr -> left);
+        preorder(tr -> right);
     }
 }
 
@@ -112,10 +98,8 @@ int main(){
     }
     else{
         tree *tr = createTree(str);
-        stack<int> a;
-        postorder(tr, a);
-        cout << a.top();
-        a.pop();
+        cout << "Prefix notation: "; preorder(tr); cout << endl;
+        cout << "Postfix notation: "; postorder(tr); cout << endl;
     }
     return 0;
 }
