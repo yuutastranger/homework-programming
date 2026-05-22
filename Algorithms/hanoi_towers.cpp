@@ -126,10 +126,7 @@ bool towerCorrection(int &tower, int &disk, stack *&fr_t, stack *&sc_t, stack *&
 bool moveCorrection(int &move, int &disk, int tower, stack *&fr_t, stack *&sc_t, stack *&th_t){
     cout << "Where do you want to put the disk? " << ((1 != tower) ? "1 " : "") << ((2 != tower) ? "2 " : "") << ((3 != tower) ? "3 " : "") << endl;
     cin >> move;
-    
-    if(move == tower){
-        return false;
-    }
+
     if(move == 1 && (fr_t == NULL || fr_t -> inf > disk)){
         push(fr_t, disk);
         return true;
